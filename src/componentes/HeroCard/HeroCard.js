@@ -1,26 +1,24 @@
-export function HeroCard({ secretIdentity, name, picture, universe, id }) {
-	return (
-		<Card>
-			<InformationGrid p={Spaces.TWO} mb={Spaces.ONE_HALF}>
-				<Box>
-					<Caption as="div" color={Colors.GRAY_600}>
-						{secretIdentity}
-					</Caption>
-					<Box mb={Spaces.ONE}>
-						<HeadingTwo>{name}</HeadingTwo>
-					</Box>
-					<Description as="div" color={Colors.GRAY_700}>
-						<strong>Universo:</strong> {universe}
-					</Description>
-					<Description as="div" color={Colors.GRAY_700}>
-						<strong>Nota atual:</strong> -
-					</Description>
-				</Box>
-				<HeroAvatar src={picture} />
-			</InformationGrid>
-			<Box width="87px">
-				<ButtonLink>Ver Mais</ButtonLink>
-			</Box>
-		</Card>                           
-	);
-}
+import React from 'react';
+import PropTypes from 'prop-types';
+ 
+const HeroCard = ({ id, secretIdentity, name, picture, universe }) => {
+  return (
+    <div className="hero-card">
+      <img src={picture} alt={name} />
+      <h2>{name}</h2>
+      <p><strong>Identidade Secreta:</strong> {secretIdentity}</p>
+      <p><strong>Universo:</strong> {universe}</p>
+    </div>
+  );
+};
+ 
+// Definindo o tipo das props
+HeroCard.propTypes = {
+  id: PropTypes.number.isRequired,
+  secretIdentity: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  universe: PropTypes.string.isRequired,
+};
+ 
+export default HeroCard;
