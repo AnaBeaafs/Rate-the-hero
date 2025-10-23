@@ -1,60 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import HeroCard from './HeroCard'; // Supondo que você tenha um componente HeroCard
+import React, { useState } from 'react';
+import { useHeroes } from '../hooks/useHeroes'; // Importando o hook customizado
  
 const Search = () => {
-  const [heroes, setHeroes] = useState([]);
-  const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [doSearch, setDoSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { heroes, loading, error } = useHeroes(searchTerm); // Usando o hook para buscar heróis
  
-  const fetchHeroes = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`https://superheroapi.com/api/YOUR_ACCESS_TOKEN/search/${value}`);
-      setHeroes(response.data.results); // Ajuste conforme a estrutura da API
-    } catch (error) {
-      console.error('Erro ao buscar heróis', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value); // Atualiza o termo de busca
   };
  
-  useEffect(() => {
-    if (doSearch) {
-      fetchHeroes();
-      setDoSearch(false); // Reseta a busca após buscar os heróis
-    }
-  }, [doSearch]);
+  if (loading) return <div>Carregando...</div>; // Estado de carregamento
  
-  const handleSearch = () => {
-    setDoSearch(true);
-  };
+  if (error) return <div>Erro ao buscar os heróis.</div>; // Tratamento de erro
  
   return (
     <div>
-      <h1>Busque um Herói</h1>
       <input
         type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Digite o nome do herói"
+        value={searchTerm}
+        onChange={handleSearch}
+        placeholder="Buscar heróis"
       />
-      <button onClick={handleSearch}>Buscar</button>
- 
-      {loading && <p>Carregando...</p>}
-      <div>
+      <ul>
         {heroes.map(hero => (
-          <HeroCard
-            key={hero.id}
-            id={hero.id}
-            secretIdentity={hero.biography['full-name']}
-            name={hero.name}
-            picture={hero.image.url}
-            universe={hero.biography.publisher}
-          />
+          <li key={hero.id}>{hero.name}</li> // Lista de heróis encontrados
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

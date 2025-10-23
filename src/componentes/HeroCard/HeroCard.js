@@ -1,24 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
  
-const HeroCard = ({ id, secretIdentity, name, picture, universe }) => {
+const Card = styled.div`
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+ 
+const HeroCard = ({ hero }) => {
   return (
-    <div className="hero-card">
-      <img src={picture} alt={name} />
-      <h2>{name}</h2>
-      <p><strong>Identidade Secreta:</strong> {secretIdentity}</p>
-      <p><strong>Universo:</strong> {universe}</p>
-    </div>
+    <Card>
+      <h2>{hero.name}</h2>
+      <img src={hero.image} alt={hero.name} />
+      <p>{hero.description}</p>
+    </Card>
   );
 };
- 
-// Definindo o tipo das props
-HeroCard.propTypes = {
-  id: PropTypes.number.isRequired,
-  secretIdentity: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  universe: PropTypes.string.isRequired,
-};
- 
-export default HeroCard;
